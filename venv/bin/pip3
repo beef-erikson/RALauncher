@@ -1,4 +1,4 @@
-#!"C:\Users\Beef Erikson Studios\source\repos\Python\RARandomizer\venv\Scripts\python.exe"
+#!/home/beef/Desktop/Python/RALauncher/venv/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'pip==19.0.3','console_scripts','pip3'
 __requires__ = 'pip==19.0.3'
 import re
