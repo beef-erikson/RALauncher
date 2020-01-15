@@ -7,12 +7,12 @@
 # TODO write to file
 
 from bs4 import BeautifulSoup
-import urllib.request as urllib
+import requests
 
 # Starting variables
 url = "http://retroachievements.org/gameList.php?c=2"
 file = open('n64.txt', 'w')
-soup = BeautifulSoup(urllib.urlopen(url).read(), 'html.parser')
+soup = BeautifulSoup(requests.get(url).text, 'html.parser')
 game_count = 0
 achievement_count = 0
 achievements = 0
