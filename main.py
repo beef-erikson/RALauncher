@@ -5,8 +5,7 @@
 # ################################################################### #
 
 # TODO write to file
-from game import Game
-from game import set_achievement_count
+import src.game as game
 
 # Starting variables
 n64_url = "http://retroachievements.org/gameList.php?c=2"
@@ -14,13 +13,14 @@ file = open('n64.txt', 'w')
 
 
 # TODO pretty much everything else parsing-wise. Update docstring as well
-def main() -> None:
+def main():
     """
     Testing setup, grabs achievement count from supplied title and url
     :return:
     """
-    super_mario_64 = Game(game_name="Super Mario 64")
-    super_mario_64.achievement_count = set_achievement_count(n64_url, "Super Mario 64")
+    super_mario_64 = game.Game(game_name="Super Mario 64")
+    super_mario_64.achievement_count = \
+        game.set_achievement_count(n64_url, "Super Mario 64")
     print()
     print(super_mario_64.game_name)
     print(super_mario_64.achievement_count)
@@ -30,7 +30,6 @@ file.close()
 
 if __name__ == "__main__":
     main()
-
 
 """  LEAVING FOR REFERENCE FOR NOW - DELETE LATER
 # Grabs info from supplied url
@@ -51,4 +50,3 @@ for row in tbody.find_all('tr')[1:]:
               str(achievement_count) + ' achievements in total.')
         break
 """
-
