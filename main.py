@@ -5,19 +5,35 @@
 # ################################################################### #
 
 # TODO write to file
-
-from bs4 import BeautifulSoup
-import requests
+from game import Game
+from game import set_achievement_count
 
 # Starting variables
-url = "http://retroachievements.org/gameList.php?c=2"
+n64_url = "http://retroachievements.org/gameList.php?c=2"
 file = open('n64.txt', 'w')
-soup = BeautifulSoup(requests.get(url).text, 'html.parser')
-game_count = 0
-achievement_count = 0
-achievements = 0
 
-# Grabs title names and achievement counts from list
+
+# TODO pretty much everything else parsing-wise. Update docstring as well
+def main() -> None:
+    """
+    Testing setup, grabs achievement count from supplied title and url
+    :return:
+    """
+    super_mario_64 = Game(game_name="Super Mario 64")
+    super_mario_64.achievement_count = set_achievement_count(n64_url, "Super Mario 64")
+    print()
+    print(super_mario_64.game_name)
+    print(super_mario_64.achievement_count)
+
+
+file.close()
+
+if __name__ == "__main__":
+    main()
+
+
+"""  LEAVING FOR REFERENCE FOR NOW - DELETE LATER
+# Grabs info from supplied url
 tbody = soup.findAll('tbody')[1]
 num_games = len(tbody.find_all('tr')[1:]) - 1
 
@@ -34,5 +50,5 @@ for row in tbody.find_all('tr')[1:]:
         print('\n' + str(game_count - 1) + ' games with ' +
               str(achievement_count) + ' achievements in total.')
         break
+"""
 
-file.close()
