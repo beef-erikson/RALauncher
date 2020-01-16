@@ -28,9 +28,11 @@ for row in tbody.find_all('tr')[1:]:
         name = column[1].div.string
         achievements = column[2].string
         achievement_count += int(achievements)
-        print('{:<6s}{:<55s}{:>20s}{:>4}'.format(str(game_count) + ':', name, 'Achievements: ', achievements))
+        print('{:<6s}{:<55s}{:>20s}{:>4}'.format(str(game_count) +
+              ':', name, 'Achievements: ', achievements))
     else:
-        print('\n' + str(game_count - 1) + ' games with ' + str(achievement_count) + ' achievements in total.')
+        print('\n' + str(game_count - 1) + ' games with ' +
+              str(achievement_count) + ' achievements in total.')
         break
 
 file.close()
