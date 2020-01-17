@@ -18,13 +18,30 @@ def main():
     Testing setup, grabs achievement count from supplied title and url
     :return:
     """
+    # Creates list of Nintendo 64 games that have achievements
+    n64_games = []
+    for num in range(0, game.get_game_count(n64_url)):
+        n64_games.append(num)
+
+    # Assign each entry to its class
+    for game_id in n64_games:
+        print(game_id)
+        n64_games[game_id] = game.get_game_name(n64_url, game_id)
+
+    # Debug print
+    for game_list in n64_games:
+        print(game_list)
+
+
+"""  Printing game list works fine if doing it manually
+
     super_mario_64 = game.Game(game_name="Super Mario 64")
     super_mario_64.achievement_count = \
         game.set_achievement_count(n64_url, "Super Mario 64")
     print()
     print(super_mario_64.game_name)
     print(super_mario_64.achievement_count)
-
+"""
 
 file.close()
 
