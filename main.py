@@ -12,7 +12,8 @@ n64_url = "http://retroachievements.org/gameList.php?c=2"
 file = open('n64.txt', 'w')
 
 
-# TODO pretty much everything else parsing-wise. Update docstring as well
+# TODO pretty much everything else parsing-wise.
+#  Update docstring and comments as well
 def main():
     """
     Testing setup, grabs achievement count from supplied title and url
@@ -20,17 +21,11 @@ def main():
     """
     # Creates list of Nintendo 64 games that have achievements
     n64_games = []
-    for num in range(0, game.get_game_count(n64_url)):
-        n64_games.append(num)
-
-    # Assign each entry to its class
-    for game_id in n64_games:
-        print(game_id)
-        n64_games[game_id] = game.get_game_name(n64_url, game_id)
+    game.get_game_name(n64_url, n64_games)
 
     # Debug print
     for game_list in n64_games:
-        print(game_list)
+        print(game_list.game_name)
 
 
 """  Printing game list works fine if doing it manually
