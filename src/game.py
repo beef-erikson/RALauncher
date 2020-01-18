@@ -17,7 +17,7 @@ class Game:
     # Initialization
     def __init__(self, system_name: str = None, game_name: str = None,
                  genre: str = None, developer: str = None,
-                 publisher: str = None, achievement_count: int = None,
+                 publisher: str = None, achievement_count: str = None,
                  description: str = None, game_rating: int = None,
                  game_url: str = None):
         self.system_name = system_name
@@ -31,34 +31,45 @@ class Game:
         self.game_url = game_url
 
 
-def set_achievement_count(url: str, game_name: str) -> str:
+def get_scrape_variables(url: str) -> tuple:
     """
-    Populates the game name from scraping supplied url
-    :param url:
-    :param game_name:
-    :return:
+    Returns tuple for common variables for scraping
+    :param url: - The url to scape from.
+    :return: - Tuple containing tbody, total games, game count.
     """
-    game_name += " "
     soup = BeautifulSoup(requests.get(url).text, 'html.parser')
     tbody = soup.findAll('tbody')[1]
-    num_games = len(tbody.find_all('tr')[1:]) - 1
+    total_games = get_total_game_count(url)
     game_count = 0
+
+    return tbody, total_games, game_count
+
+
+def get_game_details(url: str, game_list: list) -> list:
+    """
+    Supply url to scrape and list to append game names.
+    :param url: - The url to scrape from.
+    :param game_list: - The list to add game name to.
+    :return: - The game list supplied.
+    """
+    tbody, total_games, game_count = get_scrape_variables(url)
 
     for row in tbody.find_all('tr')[1:]:
         game_count += 1
-        if game_count <= num_games:
+        if game_count <= total_games:
             column = row.find_all('td')
-            name = column[1].div.string
-            if str(name) == game_name:
-                return column[2].string
-    return "Not Found."
+            game_name = column[1].div.string
+            achievement_count = column[2].string
+            game_list.append(Game(game_name=game_name,
+                                  achievement_count=achievement_count))
+    return game_list
 
 
 def get_total_game_count(url: str) -> int:
     """
-    Supply url to scrape, returns total games with achievements.
-    :param url: - The url to scape from
-    :return: - Total number of games with achievements
+    Supply url to scrape, returns number of games with achievements.
+    :param url: - The url to scape from.
+    :return: - Total number of games with achievements.
     """
     soup = BeautifulSoup(requests.get(url).text, 'html.parser')
     tbody = soup.findAll('tbody')[1]
@@ -66,23 +77,14 @@ def get_total_game_count(url: str) -> int:
     return total_games
 
 
-def get_game_name(url: str, game_list: list) -> list:
-    """
-    Supply url to scrape and list to append game names.
-    :param url: - The url to scrape from
-    :param game_list: - The list to add game name to
-    :return: - list
-    """
-    soup = BeautifulSoup(requests.get(url).text, 'html.parser')
-    tbody = soup.findAll('tbody')[1]
-    total_games = get_total_game_count(url)
-    game_count = 0
-    game_name = ""
-
+def get_total_achievement_count(url: str) -> int:
+    tbody, total_games, game_count = get_scrape_variables(url)
+    total_achievement_count = 0
     for row in tbody.find_all('tr')[1:]:
         game_count += 1
         if game_count <= total_games:
             column = row.find_all('td')
-            game_name = column[1].div.string
-            game_list.append(Game(game_name=game_name))
-    return game_list
+            achievements = column[2].string
+            total_achievement_count += int(achievements)
+
+    return total_achievement_count
